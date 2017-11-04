@@ -92,7 +92,13 @@ var _react = __webpack_require__("./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _chainedFunction = __webpack_require__("./node_modules/chained-function/lib/index.js");
+
+var _chainedFunction2 = _interopRequireDefault(_chainedFunction);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -126,7 +132,9 @@ var Checkbox = (_temp = _class = function (_PureComponent) {
         value: function render() {
             var _this2 = this;
 
-            var props = _extends({}, this.props);
+            var _props = this.props,
+                onChange = _props.onChange,
+                props = _objectWithoutProperties(_props, ['onChange']);
 
             delete props.indeterminate;
 
@@ -134,8 +142,21 @@ var Checkbox = (_temp = _class = function (_PureComponent) {
                 type: 'checkbox',
                 ref: function ref(el) {
                     _this2.el = el;
-                }
+                },
+                onChange: (0, _chainedFunction2.default)(function () {
+                    _this2.el.indeterminate = _this2.props.indeterminate;
+                }, onChange)
             }));
+        }
+    }, {
+        key: 'checked',
+        get: function get() {
+            return this.el.checked;
+        }
+    }, {
+        key: 'indeterminate',
+        get: function get() {
+            return this.el.indeterminate;
         }
     }]);
 
@@ -1221,6 +1242,57 @@ function getOption(options, name, defaultValue) {
     return value;
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/chained-function/lib/chained-function.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function () {
+    for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
+        funcs[_key] = arguments[_key];
+    }
+
+    return funcs.filter(function (func) {
+        return typeof func === 'function';
+    }).reduce(function (accumulator, func) {
+        if (accumulator === null) {
+            return func;
+        }
+
+        return function chainedFunction() {
+            for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                args[_key2] = arguments[_key2];
+            }
+
+            accumulator.apply(this, args);
+            func.apply(this, args);
+        };
+    }, null);
+};
+
+/***/ }),
+
+/***/ "./node_modules/chained-function/lib/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _chainedFunction = __webpack_require__("./node_modules/chained-function/lib/chained-function.js");
+
+var _chainedFunction2 = _interopRequireDefault(_chainedFunction);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _chainedFunction2.default;
 
 /***/ }),
 
@@ -26159,6 +26231,7 @@ var Table = (_temp2 = _class = function (_PureComponent) {
                 }
             },
             handleBodyScroll: function handleBodyScroll(e) {
+                _this.actions.setTableSize();
                 if (e.target !== _this.scrollTarget) {
                     return;
                 }
@@ -26781,7 +26854,8 @@ var Table = (_temp2 = _class = function (_PureComponent) {
     }, {
         key: 'render',
         value: function render() {
-            var _this7 = this;
+            var _classNames,
+                _this7 = this;
 
             var _props3 = this.props,
                 data = _props3.data,
@@ -26794,22 +26868,21 @@ var Table = (_temp2 = _class = function (_PureComponent) {
                 hoverable = _props3.hoverable,
                 sortable = _props3.sortable,
                 useFixedHeader = _props3.useFixedHeader,
-                props = _objectWithoutProperties(_props3, ['data', 'className', 'justified', 'loading', 'bordered', 'title', 'footer', 'hoverable', 'sortable', 'useFixedHeader']);
-
-            delete props.rowKey;
-            delete props.columns;
-            delete props.expandedRowRender;
-            delete props.expandedRowKeys;
-            delete props.maxHeight;
-            delete props.rowClassName;
-            delete props.onRowClick;
-            delete props.emptyText;
-            delete props.showHeader;
+                rowKey = _props3.rowKey,
+                columns = _props3.columns,
+                expandedRowRender = _props3.expandedRowRender,
+                expandedRowKeys = _props3.expandedRowKeys,
+                maxHeight = _props3.maxHeight,
+                rowClassName = _props3.rowClassName,
+                onRowClick = _props3.onRowClick,
+                emptyText = _props3.emptyText,
+                showHeader = _props3.showHeader,
+                props = _objectWithoutProperties(_props3, ['data', 'className', 'justified', 'loading', 'bordered', 'title', 'footer', 'hoverable', 'sortable', 'useFixedHeader', 'rowKey', 'columns', 'expandedRowRender', 'expandedRowKeys', 'maxHeight', 'rowClassName', 'onRowClick', 'emptyText', 'showHeader']);
 
             return _react2.default.createElement(
                 'div',
                 _extends({}, props, {
-                    className: (0, _classnames2.default)(className, _index2.default.tableWrapper, _defineProperty({}, _index2.default.tableMinimalism, !bordered), _defineProperty({}, _index2.default.tableBordered, bordered), _defineProperty({}, _index2.default.tableExtendColumnWidth, !justified), _defineProperty({}, _index2.default.tableFixedHeader, useFixedHeader), _defineProperty({}, _index2.default.tableNoData, !data || data.length === 0), _defineProperty({}, _index2.default.tableHover, hoverable), _defineProperty({}, _index2.default.tableSortable, sortable)),
+                    className: (0, _classnames2.default)(className, _index2.default.tableWrapper, (_classNames = {}, _defineProperty(_classNames, _index2.default.tableMinimalism, !bordered), _defineProperty(_classNames, _index2.default.tableBordered, bordered), _defineProperty(_classNames, _index2.default.tableExtendColumnWidth, !justified), _defineProperty(_classNames, _index2.default.tableFixedHeader, useFixedHeader), _defineProperty(_classNames, _index2.default.tableNoData, !data || data.length === 0), _defineProperty(_classNames, _index2.default.tableHover, hoverable), _defineProperty(_classNames, _index2.default.tableSortable, sortable), _classNames)),
                     ref: function ref(node) {
                         if (node) {
                             _this7.tableWrapper = node;
@@ -26903,36 +26976,56 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var ROW_HEIGHT = 37;
+
 var TableBody = (_temp = _class = function (_PureComponent) {
     _inherits(TableBody, _PureComponent);
 
-    function TableBody() {
+    function TableBody(props) {
         _classCallCheck(this, TableBody);
 
-        return _possibleConstructorReturn(this, (TableBody.__proto__ || Object.getPrototypeOf(TableBody)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (TableBody.__proto__ || Object.getPrototypeOf(TableBody)).call(this, props));
+
+        _this._handleScroll = function (event) {
+            var start = Math.max(Math.floor(event.target.scrollTop / ROW_HEIGHT) - 2, 0);
+            var count = Math.ceil(_this.body.offsetHeight / ROW_HEIGHT) + 4;
+            _this.setState({ from: start, to: Math.min(start + count, _this.props.records.length) });
+            _this.props.onScroll(event);
+        };
+
+        _this.state = {
+            from: 0,
+            to: props.records.length
+        };
+        return _this;
     }
 
     _createClass(TableBody, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            var _this2 = this;
+
             var _props = this.props,
                 onMouseOver = _props.onMouseOver,
-                onTouchStart = _props.onTouchStart,
-                onScroll = _props.onScroll;
+                onTouchStart = _props.onTouchStart;
 
-            this.body.addEventListener('scroll', onScroll);
+            this.body.parentElement.addEventListener('scroll', this._handleScroll);
             this.body.addEventListener('mouseover', onMouseOver);
             this.body.addEventListener('touchstart', onTouchStart);
+
+            setTimeout(function () {
+                var count = Math.ceil(_this2.body.offsetHeight / ROW_HEIGHT) + 4;
+                _this2.setState({ to: count });
+            }, 100);
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             var _props2 = this.props,
                 onMouseOver = _props2.onMouseOver,
-                onTouchStart = _props2.onTouchStart,
-                onScroll = _props2.onScroll;
+                onTouchStart = _props2.onTouchStart;
 
-            this.body.removeEventListener('scroll', onScroll);
+            this.body.parentElement.removeEventListener('scroll', this._handleScroll);
             this.body.removeEventListener('mouseover', onMouseOver);
             this.body.removeEventListener('touchstart', onTouchStart);
         }
@@ -26955,7 +27048,7 @@ var TableBody = (_temp = _class = function (_PureComponent) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             var _props3 = this.props,
                 columns = _props3.columns,
@@ -26969,30 +27062,37 @@ var TableBody = (_temp = _class = function (_PureComponent) {
                 rowClassName = _props3.rowClassName;
 
             var noData = !records || records.length === 0;
+
+            var rows = [_react2.default.createElement('div', { key: 'placeholder', style: { height: 37 * this.state.from } })];
+
+            for (var i = this.state.from; i < this.state.to; i++) {
+                var row = records[i];
+                var key = this.getRowKey(row, i);
+
+                rows.push(_react2.default.createElement(_TableRow2.default, {
+                    columns: columns,
+                    currentHoverKey: currentHoverKey,
+                    expandedRowKeys: expandedRowKeys,
+                    expandedRowRender: expandedRowRender,
+                    hoverKey: key,
+                    index: i,
+                    key: key,
+                    onHover: onRowHover,
+                    onRowClick: onRowClick,
+                    record: row,
+                    rowClassName: rowClassName
+                }));
+            }
+
             return _react2.default.createElement(
                 'div',
                 {
                     className: _index2.default.tbody,
                     ref: function ref(node) {
-                        _this2.body = node;
+                        _this3.body = node;
                     }
                 },
-                records.map(function (row, index) {
-                    var key = _this2.getRowKey(row, index);
-                    return _react2.default.createElement(_TableRow2.default, {
-                        columns: columns,
-                        currentHoverKey: currentHoverKey,
-                        expandedRowKeys: expandedRowKeys,
-                        expandedRowRender: expandedRowRender,
-                        hoverKey: key,
-                        index: index,
-                        key: key,
-                        onHover: onRowHover,
-                        onRowClick: onRowClick,
-                        record: row,
-                        rowClassName: rowClassName
-                    });
-                }),
+                rows,
                 noData && _react2.default.createElement(
                     'div',
                     { className: _index2.default.tablePlaceholder },
@@ -27088,14 +27188,23 @@ var TableCell = (_temp = _class = function (_Component) {
     _createClass(TableCell, [{
         key: 'shouldComponentUpdate',
         value: function shouldComponentUpdate(nextProps, nextState) {
-            return typeof nextProps.column.render === 'function' || nextProps.column !== this.props.column || nextProps.record !== this.props.record;
+            var _props = this.props,
+                currentColumn = _props.column,
+                currentRecord = _props.record;
+            var nextColumn = nextProps.column,
+                nextRecord = nextProps.record;
+
+            var currentDataKey = typeof currentColumn.dataKey !== 'undefined' ? currentColumn.dataKey : currentColumn.dataIndex;
+            var nextDataKey = typeof nextColumn.dataKey !== 'undefined' ? nextColumn.dataKey : nextColumn.dataIndex;
+
+            return typeof nextProps.column.render === 'function' || nextProps.column !== this.props.column || nextProps.record !== this.props.record && (0, _lodash2.default)(currentRecord, currentDataKey) !== (0, _lodash2.default)(nextRecord, nextDataKey);
         }
     }, {
         key: 'render',
         value: function render() {
-            var _props = this.props,
-                column = _props.column,
-                record = _props.record;
+            var _props2 = this.props,
+                column = _props2.column,
+                record = _props2.record;
 
             var render = column.render;
             // dataKey is an alias for dataIndex
@@ -27785,4 +27894,4 @@ exports.default = uniqueid;
 /***/ })
 
 /******/ });
-//# sourceMappingURL=bundle.js.map?3e1e045c9bde839e4671
+//# sourceMappingURL=bundle.js.map?85b30d6a905abcda5ddc
