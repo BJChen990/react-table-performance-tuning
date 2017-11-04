@@ -59,6 +59,7 @@ class Table extends PureComponent {
             }
         },
         handleBodyScroll: (e) => {
+            this.actions.setTableSize();
             if (e.target !== this.scrollTarget) {
                 return;
             }
@@ -664,18 +665,20 @@ class Table extends PureComponent {
             hoverable,
             sortable,
             useFixedHeader,
+
+            // Not used
+            rowKey,             // eslint-disable-line
+            columns,            // eslint-disable-line
+            expandedRowRender,  // eslint-disable-line
+            expandedRowKeys,    // eslint-disable-line
+            maxHeight,          // eslint-disable-line
+            rowClassName,       // eslint-disable-line
+            onRowClick,         // eslint-disable-line
+            emptyText,          // eslint-disable-line
+            showHeader,         // eslint-disable-line
+
             ...props
         } = this.props;
-
-        delete props.rowKey;
-        delete props.columns;
-        delete props.expandedRowRender;
-        delete props.expandedRowKeys;
-        delete props.maxHeight;
-        delete props.rowClassName;
-        delete props.onRowClick;
-        delete props.emptyText;
-        delete props.showHeader;
 
         return (
             <div
@@ -683,13 +686,15 @@ class Table extends PureComponent {
                 className={classNames(
                     className,
                     styles.tableWrapper,
-                    { [styles.tableMinimalism]: !bordered },
-                    { [styles.tableBordered]: bordered },
-                    { [styles.tableExtendColumnWidth]: !justified },
-                    { [styles.tableFixedHeader]: useFixedHeader },
-                    { [styles.tableNoData]: !data || data.length === 0 },
-                    { [styles.tableHover]: hoverable },
-                    { [styles.tableSortable]: sortable }
+                    {
+                        [styles.tableMinimalism]: !bordered,
+                        [styles.tableBordered]: bordered,
+                        [styles.tableExtendColumnWidth]: !justified,
+                        [styles.tableFixedHeader]: useFixedHeader,
+                        [styles.tableNoData]: !data || data.length === 0,
+                        [styles.tableHover]: hoverable,
+                        [styles.tableSortable]: sortable
+                    },
                 )}
                 ref={(node) => {
                     if (node) {
