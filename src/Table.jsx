@@ -244,7 +244,7 @@ class Table extends PureComponent {
             const mainBody = this.mainTable.tableBody;
             const tBody = mainBody.body;
             const bodyRows = helper.getSubElements(tBody, `.${styles.tr}`);
-            const tableMaxWidth = tBody.clientWidth;
+            const tableMaxWidth = tBody.offsetWidth;
             const thsWidth = getMainTableHeaderCellActualWidth();
             let sumCellWidth = 0;
             let cellsWidth = [];
@@ -309,7 +309,7 @@ class Table extends PureComponent {
                             cellsWidth[j] = cellWidth;
                         } else {
                             thWidth = thsWidth[j] || 0;
-                            tdWidth = td.getBoundingClientRect().width;
+                            tdWidth = td.offsetWidth;
                             cellWidth = cellsWidth[j] || 0;
                             cellsWidth[j] = Math.max(cellWidth, thWidth, tdWidth);
                             nonCustomColumnsIndex.push(j);
@@ -374,7 +374,7 @@ class Table extends PureComponent {
                     td = bodyCell[j];
                     cellContent = helper.getSubElements(td, `.${styles.tdContent}`);
                     content = cellContent[0];
-                    tdHeight = (content ? content.getBoundingClientRect().height : 0) +
+                    tdHeight = (content ? content.offsetHeight : 0) +
                                 parseInt(helper.getElementStyle(td, 'padding-top'), 10) +
                                 parseInt(helper.getElementStyle(td, 'padding-bottom'), 10) +
                                 parseInt(helper.getElementStyle(td, 'border-top-width'), 10) +

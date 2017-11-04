@@ -26412,7 +26412,7 @@ var Table = (_temp2 = _class = function (_PureComponent) {
                 var mainBody = _this.mainTable.tableBody;
                 var tBody = mainBody.body;
                 var bodyRows = _helper2.default.getSubElements(tBody, '.' + _index2.default.tr);
-                var tableMaxWidth = tBody.clientWidth;
+                var tableMaxWidth = tBody.offsetWidth;
                 var thsWidth = getMainTableHeaderCellActualWidth();
                 var sumCellWidth = 0;
                 var cellsWidth = [];
@@ -26478,7 +26478,7 @@ var Table = (_temp2 = _class = function (_PureComponent) {
                                 cellsWidth[j] = cellWidth;
                             } else {
                                 thWidth = thsWidth[j] || 0;
-                                tdWidth = td.getBoundingClientRect().width;
+                                tdWidth = td.offsetWidth;
                                 cellWidth = cellsWidth[j] || 0;
                                 cellsWidth[j] = Math.max(cellWidth, thWidth, tdWidth);
                                 nonCustomColumnsIndex.push(j);
@@ -26543,7 +26543,7 @@ var Table = (_temp2 = _class = function (_PureComponent) {
                         td = bodyCell[j];
                         cellContent = _helper2.default.getSubElements(td, '.' + _index2.default.tdContent);
                         content = cellContent[0];
-                        tdHeight = (content ? content.getBoundingClientRect().height : 0) + parseInt(_helper2.default.getElementStyle(td, 'padding-top'), 10) + parseInt(_helper2.default.getElementStyle(td, 'padding-bottom'), 10) + parseInt(_helper2.default.getElementStyle(td, 'border-top-width'), 10) + parseInt(_helper2.default.getElementStyle(td, 'border-bottom-width'), 10);
+                        tdHeight = (content ? content.offsetHeight : 0) + parseInt(_helper2.default.getElementStyle(td, 'padding-top'), 10) + parseInt(_helper2.default.getElementStyle(td, 'padding-bottom'), 10) + parseInt(_helper2.default.getElementStyle(td, 'border-top-width'), 10) + parseInt(_helper2.default.getElementStyle(td, 'border-bottom-width'), 10);
                         cellHeight = Math.max(cellHeight, tdHeight);
                     }
                     rowsHeight[i] = cellHeight;
@@ -27031,13 +27031,7 @@ var TableBody = (_temp = _class = function (_PureComponent) {
         }
     }, {
         key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            var scrollTop = this.props.scrollTop;
-
-            if (this.body.scrollTop !== scrollTop) {
-                this.body.scrollTop = scrollTop;
-            }
-        }
+        value: function componentDidUpdate(prevProps, prevState) {}
     }, {
         key: 'getRowKey',
         value: function getRowKey(record, index) {
@@ -27083,6 +27077,7 @@ var TableBody = (_temp = _class = function (_PureComponent) {
                     rowClassName: rowClassName
                 }));
             }
+            rows.push(_react2.default.createElement('div', { key: 'placeholder2', style: { height: 37 * (records.length - this.state.to) } }));
 
             return _react2.default.createElement(
                 'div',
@@ -27295,13 +27290,7 @@ var TableHeader = (_temp = _class = function (_Component) {
 
     _createClass(TableHeader, [{
         key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            var scrollLeft = this.props.scrollLeft;
-
-            if (this.header.scrollLeft !== scrollLeft) {
-                this.header.scrollLeft = scrollLeft;
-            }
-        }
+        value: function componentDidUpdate(prevProps, prevState) {}
     }, {
         key: 'shouldComponentUpdate',
         value: function shouldComponentUpdate(nextProps, nextState) {
@@ -27894,4 +27883,4 @@ exports.default = uniqueid;
 /***/ })
 
 /******/ });
-//# sourceMappingURL=bundle.js.map?85b30d6a905abcda5ddc
+//# sourceMappingURL=bundle.js.map?d3f3534d3c9a90123cda

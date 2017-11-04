@@ -70,10 +70,6 @@ class TableBody extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { scrollTop } = this.props;
-        if (this.body.scrollTop !== scrollTop) {
-            this.body.scrollTop = scrollTop;
-        }
     }
 
     getRowKey (record, index) {
@@ -120,6 +116,9 @@ class TableBody extends PureComponent {
                 />
             );
         }
+        rows.push(
+            <div key="placeholder2" style={{ height: 37 * (records.length - this.state.to) }} />
+        );
 
         return (
             <div
